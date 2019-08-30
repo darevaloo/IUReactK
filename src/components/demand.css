@@ -1,0 +1,93 @@
+.content{
+  position: relative;
+  display: flex;
+  flex-flow: row wrap;
+  padding-top:1.5vh;
+  padding-left:1vw;
+  height: 120vh;
+  width:97%;
+}
+
+.content  .graph-production {
+  position: relative;
+  width: 60vw;
+  height: 60vh;
+}
+.content  .graph-price {
+  position: relative;
+  width: 60vw;
+  height: 450px;
+}
+.content  .curve-add{
+  position: relative;
+  padding-top:1vh;
+  width: 20vw;
+  font-size: calc(6px + 1vmin);
+}
+
+.content  .curve-add  .button-curve-add {
+  display: flex;
+  justify-content:flex-end;
+}
+
+
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+}
+.overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 10px;
+
+}
+
+.caret {
+  cursor: pointer;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none;
+}
+
+.caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.caret-down::before {
+  -ms-transform: rotate(90deg); /* IE 9 */
+  -webkit-transform: rotate(90deg); /* Safari */
+  transform: rotate(90deg);
+}
+
+.nested {
+  display: block;
+}
+
+.active {
+  display: block;
+}
+#circle {
+      width: 12px;
+      height: 12px;
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+      border-radius: 20px;
+      background: red;
+  }
