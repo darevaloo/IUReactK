@@ -15,80 +15,7 @@ const list_name_curves = ["Producción Total", "Producción por granja", "Produc
 axios.defaults.headers.post['Content-Type'] ='application/json';
 
 
-const root = [
-  {
-    "Raoul": 113,
-    "Josiane": 80,
-    "Marcel": 106,
-    "René": 168,
-    "Paul": 66,
-    "Jacques": 174
-  },
-  {
-    "Raoul": 156,
-    "Josiane": 141,
-    "Marcel": 122,
-    "René": 71,
-    "Paul": 167,
-    "Jacques": 127
-  },
-  {
-    "Raoul": 93,
-    "Josiane": 196,
-    "Marcel": 45,
-    "René": 50,
-    "Paul": 81,
-    "Jacques": 78
-  },
-  {
-    "Raoul": 176,
-    "Josiane": 18,
-    "Marcel": 39,
-    "René": 106,
-    "Paul": 192,
-    "Jacques": 38
-  },
-  {
-    "Raoul": 110,
-    "Josiane": 135,
-    "Marcel": 28,
-    "René": 35,
-    "Paul": 167,
-    "Jacques": 80
-  },
-  {
-    "Raoul": 101,
-    "Josiane": 38,
-    "Marcel": 16,
-    "René": 147,
-    "Paul": 68,
-    "Jacques": 200
-  },
-  {
-    "Raoul": 179,
-    "Josiane": 17,
-    "Marcel": 91,
-    "René": 194,
-    "Paul": 160,
-    "Jacques": 48
-  },
-  {
-    "Raoul": 62,
-    "Josiane": 181,
-    "Marcel": 147,
-    "René": 77,
-    "Paul": 145,
-    "Jacques": 65
-  },
-  {
-    "Raoul": 62,
-    "Josiane": 12,
-    "Marcel": 10,
-    "René": 113,
-    "Paul": 39,
-    "Jacques": 77
-  }
-]
+
 function parser_stream(curves_plot){
   var data = [];
   var i = 0;
@@ -174,7 +101,7 @@ class SelectCurve extends Component{
         keys.map(k=>{
           data = data[k]
         });
-        curves[e.target.name] = data;
+        curves[e.target.value] = data;
         this.setState(state => ({
           data: curves
         }));
@@ -191,7 +118,7 @@ class SelectCurve extends Component{
     if ((deep <= 2)){
       return (<ul className="nested" >{Object.keys(data).map(key=>
                 <li >
-                   {deep === 2 ? <tr><td><input type="checkbox" onChange={this.handleClick} name={cadena.concat(key)} value={cadena.concat(key)}/><label>&nbsp;{key}</label></td></tr>:<span className="caret" onClick={this.clickSpan} id={key}>{key}</span>}
+                   {deep === 2 ? <tr><td><input type="radio" name="curve" onChange={this.handleClick} value={cadena.concat(key)}/><label>&nbsp;{key}</label></td></tr>:<span className="caret" onClick={this.clickSpan} id={key}>{key}</span>}
                    {this.treeOption(data[key],cadena.concat(key,'/'),deep+1)}
                 </li>
                   )
@@ -253,6 +180,7 @@ class Demanda extends Component{
         // Este enlace es necesario para hacer que `this` funcione en el callback
         this.handleClick = this.handleClick.bind(this);
         this.myCallback = this.myCallback.bind(this);
+        this.clickDelete = this.clickDelete.bind(this);
       }
 
       componentDidMount() {
@@ -287,6 +215,18 @@ class Demanda extends Component{
       }));
   }
 
+  clickDelete(e){
+    var curvesPlot = this.state.curves_plot;
+    delete curvesPlot[e.target.value];
+    var curvesStream = [];
+
+    this.setState(state => ({
+      curves_plot: curvesPlot,
+      curves_stream:curvesStream,
+      data: parser_plot(curvesPlot)
+    }));
+  }
+
 
 
   handleClick() {
@@ -301,7 +241,7 @@ class Demanda extends Component{
       <div className="content">
 
             <div className="graph-production">
-                Demanda Estimada
+                <h3>Demanda Estimada</h3>
                 <ResponsiveStream
                         data={this.state.curves_stream}
                         keys={[ 'BASELINE', 'E1', 'E2', 'E3' ]}
@@ -397,15 +337,13 @@ class Demanda extends Component{
                                 <Table fill>
                                  <tbody>
                                     <tr key="1">
-                                        <th stye="width:5px"> </th>
                                         <th> Nombre curva</th>
                                         <th>  </th>
                                     </tr>
                                     {Object.keys(this.state.curves_plot).map(key=>
                                       <tr key={key}>
-                                          <td stye="width:5px" > <div id="circle"></div></td>
                                           <td> {key}</td>
-                                          <td onClick={this.clickSpan}> <Icon size={30} icon={ic_delete} /> </td>
+                                          <td > <button  value={key} onClick={e=>this.clickDelete(e)} className="fa fa-trash"></button> </td>
                                       </tr>
                                     )
                                     }
@@ -423,7 +361,7 @@ class Demanda extends Component{
 
             </div>
             <div className="graph-price">
-                <div>Precio estimado</div>
+                <div><h3>Precio estimado</h3></div>
                 <ResponsiveLine
                             data={this.state.data}
                             margin={{ top: 50, right: 110, bottom: 50, left: 60 }}

@@ -6,19 +6,25 @@ import Table from 'react-bootstrap/Table';
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import './production.css';
+
+import { FaBeer } from 'react-icons/fa';
 import {ic_delete} from 'react-icons-kit/md/ic_delete'
 import { Icon } from 'react-icons-kit'
 
 const list_name_curves = ["Producción Total", "Producción por granja", "Producción por lote"];
+const IconTrash = () => <Icon size={20} icon={ic_delete} />;
+
 
 axios.defaults.headers.post['Content-Type'] ='application/json';
 
 
 function parser_plot(curves_plot){
+
   var data = [];
   Object.keys(curves_plot).map(function(key){
     var curve = {}
     curve["id"] = key;
+    curve["color"] = 'hsl(28, 61%, 77%)';
     var points = [];
     var i = 0;
     curves_plot[key].map(function(node){
@@ -144,12 +150,13 @@ class Production extends Component{
           data: [],
           curves_list: {},
           curves_plot: {},
+          color_plot: {},
           isToggleOn: true
         }
         // Este enlace es necesario para hacer que `this` funcione en el callback
         this.handleClick = this.handleClick.bind(this);
         this.myCallback = this.myCallback.bind(this);
-        this.clickDelete = this.clickDelete.bind(this);
+
       }
 
       componentDidMount() {
@@ -201,11 +208,12 @@ class Production extends Component{
       }));
   }
 
-  clickDelete = (e)=>{
+  clickDelete(e){
     var curvesPlot = this.state.curves_plot;
     delete curvesPlot[e.target.value];
     this.setState(state => ({
-      curves_plot: curvesPlot
+      curves_plot: curvesPlot,
+      data: parser_plot(curvesPlot)
     }));
   }
 
@@ -219,9 +227,9 @@ class Production extends Component{
     return (
 
       <div className="content">
-
+            {this.clickDelete = this.clickDelete.bind(this)}
             <div className="graph-production">
-                Produccion estimada
+                <h3>Produccion estimada</h3>
                 <ResponsiveLine
                   data={this.state.data}
                   margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
@@ -260,11 +268,10 @@ class Production extends Component{
             </div>
 
             <div className="curve-add">
-                <Card  border="light" style={{ width: '20rem' }}>
+                <Card  border="light" style={{ width: '25vw' }}>
 
                     <Card.Body>
                         <Card.Title>Curvas Activas</Card.Title>
-
                             <Card.Text>
                                 <Table fill>
                                  <tbody>
@@ -277,7 +284,7 @@ class Production extends Component{
                                       <tr key={key}>
                                           <td stye="width:5px" > <div id="circle"></div></td>
                                           <td> {key}</td>
-                                          <td ><button onClick={this.clickDelete} value={key}><Icon  size={20} icon={ic_delete} /></button> </td>
+                                          <td ><button  value={key} onClick={e=>this.clickDelete(e)} className="fa fa-trash"></button> </td>
                                       </tr>
                                     )
                                     }
