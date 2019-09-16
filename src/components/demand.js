@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import { ResponsiveStream } from '@nivo/stream'
 import { ResponsiveLine } from '@nivo/line';
 import Card  from 'react-bootstrap/Card';
@@ -10,7 +10,6 @@ import './demand.css';
 import {ic_delete} from 'react-icons-kit/md/ic_delete'
 import { Icon } from 'react-icons-kit'
 
-const list_name_curves = ["Producción Total", "Producción por granja", "Producción por lote"];
 
 axios.defaults.headers.post['Content-Type'] ='application/json';
 
@@ -22,30 +21,27 @@ function parser_stream(curves_plot){
   for (var j = 0; j < 15; j++) {
    data.push({});
   };
-  Object.keys(curves_plot).map(function(key){
-    Object.keys(curves_plot[key]).map(function(k){
-
+  Object.keys(curves_plot).forEach(function(key){
+    Object.keys(curves_plot[key]).forEach(function(k){
       i = 0;
-      curves_plot[key][k]["DEMAND_HIGH"].map(function(node){
+      curves_plot[key][k]["DEMAND_HIGH"].forEach(function(node){
         data[i][k]=node;
         i = i +1;
       });
-
     });
-
   });
   return data;
 }
 
 function parser_plot(curves_plot){
   var data = [];
-  Object.keys(curves_plot).map(function(key){
-    Object.keys(curves_plot[key]).map(function(k){
+  Object.keys(curves_plot).forEach(function(key){
+    Object.keys(curves_plot[key]).forEach(function(k){
       var curve = {}
       curve["id"] = k;
       var points = [];
       var i = 0;
-      curves_plot[key][k]["PRICE"].map(function(node){
+      curves_plot[key][k]["PRICE"].forEach(function(node){
         points.push({"x":i,"y":node});
         i = i +1;
       });
@@ -98,7 +94,7 @@ class SelectCurve extends Component{
       if (e.target.checked){
         var keys = e.target.value.split("/");
         var data = this.props.curves_list;
-        keys.map(k=>{
+        keys.forEach(k=>{
           data = data[k]
         });
         curves[e.target.value] = data;

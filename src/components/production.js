@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import Card  from 'react-bootstrap/Card';
 import Button  from 'react-bootstrap/Button';
@@ -7,27 +7,23 @@ import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import './production.css';
 
-import { FaBeer } from 'react-icons/fa';
 import {ic_delete} from 'react-icons-kit/md/ic_delete'
 import { Icon } from 'react-icons-kit'
 
 const list_name_curves = ["Producción Total", "Producción por granja", "Producción por lote"];
-const IconTrash = () => <Icon size={20} icon={ic_delete} />;
 
 
 axios.defaults.headers.post['Content-Type'] ='application/json';
 
 
 function parser_plot(curves_plot){
-
   var data = [];
-  Object.keys(curves_plot).map(function(key){
-    var curve = {}
+  Object.keys(curves_plot).forEach(function(key){
+    var curve = {};
     curve["id"] = key;
-    curve["color"] = 'hsl(28, 61%, 77%)';
     var points = [];
     var i = 0;
-    curves_plot[key].map(function(node){
+    curves_plot[key].forEach(function(node){
       points.push({"x":i,"y":node});
       i = i +1;
     });
