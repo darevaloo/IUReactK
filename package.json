@@ -10,7 +10,7 @@
     "@nivo/radar": "^0.59.1",
     "@nivo/stream": "^0.59.3",
     "@version/react-router-v3": "^1.0.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bootstrap": "^4.3.1",
     "eslint": "^6.1.0",
     "mathjax": "^2.7.5",
